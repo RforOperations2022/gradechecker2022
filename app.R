@@ -82,7 +82,8 @@ server <- function(input, output) {
     })
     # Grade Average
     output$gradeAverage <- renderValueBox({
-        value <- mean(grades()$`Final Grade`, na.rm = TRUE)
+        avg <- filter(grades(), `Andrew ID` != "jrathi")
+        value <- mean(avg$`Final Grade`, na.rm = TRUE)
         subtitle <- paste("Avg for ", input$assignment)
         valueBox(value = round(value ,2), subtitle = subtitle, icon = icon("check-square"))
     })
