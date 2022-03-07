@@ -27,7 +27,7 @@ ui <- dashboardPage(skin = "green",
             selectInput("assignment",
                         "View Grade for:",
                         choices = c("Course Grades", "Homework 1", "Homework 2", "Final Project"),
-                        selected = "Homework 2")
+                        selected = "Final Project")
             ),
         dashboardBody(
                 fluidRow(
@@ -83,6 +83,9 @@ server <- function(input, output) {
     # Grade Average
     output$gradeAverage <- renderValueBox({
         avg <- filter(grades(), `Andrew ID` != "jrathi", `Andrew ID` != "nemmanue")
+        if (input$assignment %in% c("Course Grades", "Final Project")) {
+            avg <- filter(avg, `Andrew ID` != "meghnas")
+        }
         value <- mean(avg$`Final Grade`, na.rm = TRUE)
         subtitle <- paste("Avg for ", input$assignment)
         valueBox(value = round(value ,2), subtitle = subtitle, icon = icon("check-square"))
